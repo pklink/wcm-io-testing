@@ -340,6 +340,9 @@ public final class ContentBuilder extends org.apache.sling.testing.mock.sling.bu
    */
   public Asset asset(@NotNull String path, @NotNull InputStream inputStream, @NotNull String mimeType, @Nullable Map<String, Object> metadata) {
     AssetManager assetManager = resourceResolver.adaptTo(AssetManager.class);
+    if (assetManager == null) {
+      throw new RuntimeException("No asset manager.");
+    }
     Asset asset = assetManager.createAsset(path, inputStream, mimeType, true);
 
     if (metadata != null && !metadata.isEmpty()) {
@@ -528,6 +531,9 @@ public final class ContentBuilder extends org.apache.sling.testing.mock.sling.bu
    */
   public Tag tag(@NotNull String tagId) {
     TagManager tagManager = resourceResolver.adaptTo(TagManager.class);
+    if (tagManager == null) {
+      throw new RuntimeException("No tag manager.");
+    }
     String tagTitle = ResourceUtil.getName(StringUtils.substringAfter(tagId, ":"));
     try {
       return tagManager.createTag(tagId, tagTitle, null, true);
